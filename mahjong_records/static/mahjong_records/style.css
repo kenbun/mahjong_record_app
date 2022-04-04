@@ -11,9 +11,15 @@ ul{
 li{
   list-style: none;
 }
-a{
+.default_text{
   display: block;
   text-decoration: none;
   color: white;
   margin-right: 35px;
+}
+.register_text{
+   display: block;
+  text-decoration: none;
+  color: lightgreen;
+  margin-right: 35px; 
 }
