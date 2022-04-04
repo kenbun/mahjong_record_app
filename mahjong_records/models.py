@@ -19,7 +19,7 @@ class Game(models.Model):
     return timezone.localtime(self.playing_date).strftime("%Y/%m/%d %H:%M")
 
   def users(self):
-    users = self.usergame_set.all().distinct()
+    users = self.record_set.all().order_by("rank")
     return users
 
 class Record(models.Model):

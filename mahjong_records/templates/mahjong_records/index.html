@@ -1,9 +1,6 @@
+{% extends "mahjong_records/base.html" %}
+{% block content %}
 <h1 align="center"> 本日の対局 </h1>
-<div align="right">
-    <button href="{% url 'mahjong_records'%">本日の総合成績</button>
-    <button>対局結果 記録</button>
-    <button>通算記録</button>
-</div>
 <hr>
 {% if game.exists %}
     {% for halfround in game %}
@@ -17,20 +14,21 @@
                     <th>ポイント</th>
                 </tr>
             </thead>
-            <!-- <tbody>
-                {% for datas in halfround.serch_records %}
+            <tbody>
+                {% for datas in halfround.users %}
                     <tr>
                     
-                        <th><strong>{{datas.record.rank}}</strong></th>
+                        <th><strong>{{datas.rank}}</strong></th>
                         <th><strong>{{datas.user.name}}</strong></th>
-                        <th>{{datas.record.score}}</th>
-                        <th>{{datas.record.point}}</th>
+                        <th>{{datas.score}}</th>
+                        <th>{{datas.point}}</th>
                     </tr>
                 {%endfor%}
-            </tbody> -->
+            </tbody>
         </table>
     <hr>
     {% endfor %}
 {% else %}
     <h2>対局なし</h2>
 {% endif %}
+{% endblock%}

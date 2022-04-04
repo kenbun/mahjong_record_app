@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<meta charset="UTF-8">
+<title>麻雀成績記録アプリ</title>
+<nav>
+  <ul>
+    <li><a href="{% url 'index'%}">本日の対局結果</a></li>
+    <li><a href="{% url 'total'%}">本日の総合成績</a></li>
+    <li><a href="#">対局結果の記録</a></li>
+    <li><a href="#">通算成績</a></li>
+    <li><a href="#">プレイヤー登録</a></li>
+  </ul>
+</nav>
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
