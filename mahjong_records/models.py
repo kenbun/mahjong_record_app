@@ -18,10 +18,9 @@ class Game(models.Model):
   def __str__(self):
     return timezone.localtime(self.playing_date).strftime("%Y/%m/%d %H:%M")
 
-  def serch_records(self):
-    records = self.gamerecord_set.all().order_by("record__rank")
-    order_records = [temp.record.userrecord_set.first() for temp in records]
-    return order_records
+  def users(self):
+    users = self.usergame_set.all().distinct()
+    return users
 
 class Record(models.Model):
   rank = models.IntegerField(default=1)
@@ -32,11 +31,3 @@ class Record(models.Model):
 
   def __str__(self):
     return str(self.rank)+"着,"+self.user.name+str(self.point)+timezone.localtime(self.game.playing_date).strftime("%Y/%m/%d %H:%M")
-
-
-class UserGame(models.Model):
-  user = models.ForeignKey(User, verbose_name='user_id', on_delete=models.CASCADE)
-  game = models.ForeignKey(Game, on_delete=models.CASCADE,verbose_name='game_id')
-
-  def __str__(self):
-    return self.user.name+","+timezone.localtime(self.game.playing_date).strftime("%Y/%m/%d %H:%M")
