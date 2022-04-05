@@ -1,0 +1,25 @@
+{% extends "mahjong_records/base.html" %}
+{% block content %}
+<h1 align="center"> 対局結果 記録 </h1>
+<form action="{% url 'mahjong_records:resister_match' %}" method="post" align="center">
+{% csrf_token %}
+<fieldset>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {% for player, ja_player in home.items %}
+        <h3>{{ja_player}}</h3>
+        <label>プレイヤー</label>
+        <select name="{{player}}">
+            <option selected="selected" value=0>プレイヤー選択</option>
+            {% for user in users %}
+                <option value="{{user.id}}">{{user.name}}</option>
+            {% endfor %}
+        </select>
+        <div>
+            <label>最終点棒</label>
+            <input type="number" name="{{player}}_score" value="250">00
+        </div>
+    {% endfor %}
+</fieldset>
+<input type="submit" value="記録">
+</form>
+{% endblock%}
