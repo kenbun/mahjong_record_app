@@ -17,9 +17,8 @@
             <tbody>
                 {% for datas in halfround.users %}
                     <tr>
-                    
                         <th><strong>{{datas.rank}}</strong></th>
-                        <th><strong>{{datas.user.name}}</strong></th>
+                        <th><strong><a  href="{% url 'mahjong_records:user_detail' datas.user.id %}">{{datas.user.name}}</a></strong></th>
                         <th>{{datas.score}}</th>
                         <th>{{datas.point}}</th>
                     </tr>

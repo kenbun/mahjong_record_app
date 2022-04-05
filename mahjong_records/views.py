@@ -88,3 +88,10 @@ def resister_user(request):
   today = datetime.datetime.today()
   user = User.objects.create(name=request.POST["name"], created_at=today)
   return render(request, 'mahjong_records/resister_success.html', {'message':"プレイヤー登録を完了しました."})
+
+def user_detail(request, user_id):
+  user = User.objects.get(id=user_id)
+  if user.record_set.count() > 0:
+    records = user.record_set.all().order_by("-game__playing_date")
+    stats = user.record_set.aggregate(sum_point=models.Sum('point'),ave_rank=models.Avg('rank'),max_score=models.Max('score'),ave_score=models.Avg('score'), count_match=models.Count('rank'))
+  return render(request, 'mahjong_records/user_detail.html', {'user':user, 'stats':stats, 'records':records})
