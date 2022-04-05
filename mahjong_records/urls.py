@@ -10,4 +10,6 @@ urlpatterns = [
     path('career/', views.career, name="career"),
     path('record_match/', views.record_match, name="record_match"),
     path('resister_match/', views.resister_match, name="resister_match"),
+    path('record_user/', views.record_user, name="record_user"),
+    path('resister_user/', views.resister_user, name="resister_user"),
 ]

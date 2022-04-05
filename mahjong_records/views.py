@@ -37,7 +37,10 @@ def career(request):
   users = User.objects.all()
   user_data = [{'name':user.name} for user in users]
   for i, user in enumerate(users):
-    user_data[i].update(user.record_set.aggregate(sum_point=models.Sum('point'),ave_rank=models.Avg('rank'),max_score=models.Max('score'),ave_score=models.Avg('score'), count_match=models.Count('rank')))
+    if user.record_set.count() > 0:
+      user_data[i].update(user.record_set.aggregate(sum_point=models.Sum('point'),ave_rank=models.Avg('rank'),max_score=models.Max('score'),ave_score=models.Avg('score'), count_match=models.Count('rank')))
+    else:
+      user_data[i].update({"sum_point":0,"ave_rank":0,"max_score":0,"ave_score":0, "count_match":0})
   template = loader.get_template('mahjong_records/career.html')
   context = {
     'stats':sorted(user_data, key=operator.itemgetter('sum_point'), reverse=True),
@@ -76,6 +79,12 @@ def resister_match(request):
       print(user_score, user_point)
       Record.objects.create(rank=i+1, score=user_score, point=user_point, user=users.get(id=userid_score[0]), game=game)
 
-    return render(request, 'mahjong_records/resister_match.html')
+    return render(request, 'mahjong_records/resister_success.html', {'message':"対局結果を記録しました."})
 
+def record_user(request):
+   return render(request, 'mahjong_records/record_user.html')
 
+def resister_user(request):
+  today = datetime.datetime.today()
+  user = User.objects.create(name=request.POST["name"], created_at=today)
+  return render(request, 'mahjong_records/resister_success.html', {'message':"プレイヤー登録を完了しました."})

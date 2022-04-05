@@ -1,0 +1,14 @@
+{% extends "mahjong_records/base.html" %}
+{% block content %}
+<h1 align="center"> プレイヤー登録 </h1>
+<form action="{% url 'mahjong_records:resister_user' %}" method="post" align="center">
+{% csrf_token %}
+<fieldset>
+    <div>
+        <label>プレイヤー名</label>
+        <input type="text" name="name">
+    </div>
+</fieldset>
+<input type="submit" value="記録">
+</form>
+{% endblock%}
