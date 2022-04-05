@@ -16,7 +16,7 @@
             {% for user in stats %}
                 <tr>  
                     <th>{{forloop.counter}}</th>
-                    <th><strong>{{user.name}}</strong></th>
+                    <th><strong><a  href="{% url 'mahjong_records:user_detail' user.id %}">{{user.name}}</a></strong></th>
                     <th><strong>{{user.ave_rank}}</strong></th>
                     <th>{{user.sum_point}}</th>
                 </tr>

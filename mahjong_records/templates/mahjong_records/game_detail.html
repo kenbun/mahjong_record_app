@@ -1,0 +1,25 @@
+{% extends "mahjong_records/base.html" %}
+{% block content %}
+<h1 align="center"> {{records.first.game.playing_date|date:"20y/n/j H:i"}}の対局結果 </h1>
+<hr>
+<table align="center" border="1">
+    <thead>
+        <tr>
+            <th>着順</th>
+            <th>名前</th>
+            <th>点棒</th>
+            <th>ポイント</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in records %}
+            <tr>
+                <th><strong>{{record.rank}}</strong></th>
+                <th><strong><a  href="{% url 'mahjong_records:user_detail' record.user.id %}">{{record.user.name}}</a></strong></th>
+                <th>{{record.score}}</th>
+                <th>{{record.point}}</th>
+            </tr>
+        {%endfor%}
+    </tbody>
+</table>
+{% endblock%}

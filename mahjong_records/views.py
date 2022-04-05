@@ -17,13 +17,13 @@ def index(request):
   context = {
     'game':game,
   }
-  return HttpResponse(template.render(context, request))
+  return render(request, 'mahjong_records/index.html', context)
 
 def total(request):
   today = datetime.date.today()
   game = Game.objects.filter(playing_date__date=today)
   users = User.objects.filter(record__game__playing_date__date=today).distinct()
-  user_data = [{'name':user.name} for user in users]
+  user_data = [{'name':user.name, 'id':user.id} for user in users]
   for i, user in enumerate(users):
     user_data[i].update(user.record_set.filter(game__playing_date__date=today).aggregate(sum_point=models.Sum('point'),ave_rank=models.Avg('rank')))
   template = loader.get_template('mahjong_records/total.html')
@@ -31,11 +31,11 @@ def total(request):
     'game':game,
     'stats':sorted(user_data, key=operator.itemgetter('sum_point'), reverse=True),
   }
-  return HttpResponse(template.render(context, request))
+  return render(request, 'mahjong_records/total.html', context)
 
 def career(request):
   users = User.objects.all()
-  user_data = [{'name':user.name} for user in users]
+  user_data = [{'name':user.name, 'id':user.id} for user in users]
   for i, user in enumerate(users):
     if user.record_set.count() > 0:
       user_data[i].update(user.record_set.aggregate(sum_point=models.Sum('point'),ave_rank=models.Avg('rank'),max_score=models.Max('score'),ave_score=models.Avg('score'), count_match=models.Count('rank')))
@@ -95,3 +95,8 @@ def user_detail(request, user_id):
     records = user.record_set.all().order_by("-game__playing_date")
     stats = user.record_set.aggregate(sum_point=models.Sum('point'),ave_rank=models.Avg('rank'),max_score=models.Max('score'),ave_score=models.Avg('score'), count_match=models.Count('rank'))
   return render(request, 'mahjong_records/user_detail.html', {'user':user, 'stats':stats, 'records':records})
+
+def game_detail(request, game_id):
+  game = Game.objects.get(id=game_id)
+  records = game.record_set.all().order_by("rank")
+  return render(request, 'mahjong_records/game_detail.html', {'records':records})

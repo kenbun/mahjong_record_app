@@ -12,5 +12,6 @@ urlpatterns = [
     path('resister_match/', views.resister_match, name="resister_match"),
     path('record_user/', views.record_user, name="record_user"),
     path('resister_user/', views.resister_user, name="resister_user"),
-    path('<int:user_id>/', views.user_detail, name="user_detail")
+    path('<int:user_id>/user_detail/', views.user_detail, name="user_detail"),
+    path('<int:game_id>/game_detail/', views.game_detail, name="game_detail"),
 ]
