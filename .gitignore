@@ -3,4 +3,7 @@ db.sqlite3
 .DS_Store
 local_settings.py
 bin/
-lib
+lib/
+mahjong/bin/
+mahjong/lib
+mahjong/lib64
