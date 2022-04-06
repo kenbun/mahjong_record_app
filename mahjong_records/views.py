@@ -25,7 +25,12 @@ def total(request):
   users = User.objects.filter(record__game__playing_date__date=today).distinct()
   user_data = [{'name':user.name, 'id':user.id} for user in users]
   for i, user in enumerate(users):
-    user_data[i].update(user.record_set.filter(game__playing_date__date=today).aggregate(sum_point=models.Sum('point'),ave_rank=models.Avg('rank')))
+    user_data[i].update(user.record_set.filter(game__playing_date__date=today).aggregate(sum_point=models.Sum('point'),ave_rank=models.Avg('rank'),max_score=models.Max('score'),ave_score=models.Avg('score'), count_match=models.Count('rank')))
+    today_records = user.record_set.filter(game__playing_date__date=today)
+    counts = today_records.count()
+    top = today_records.filter(rank=1).count()
+    worst = today_records.filter(rank=4).count()
+    user_data[i].update({"top_rate":float(top/counts), "avoid_worst_rate":1-float(worst/counts)})
   template = loader.get_template('mahjong_records/total.html')
   context = {
     'game':game,
@@ -39,8 +44,12 @@ def career(request):
   for i, user in enumerate(users):
     if user.record_set.count() > 0:
       user_data[i].update(user.record_set.aggregate(sum_point=models.Sum('point'),ave_rank=models.Avg('rank'),max_score=models.Max('score'),ave_score=models.Avg('score'), count_match=models.Count('rank')))
+      counts = user.record_set.count()
+      top = user.record_set.filter(rank=1).count()
+      worst = user.record_set.filter(rank=4).count()
+      user_data[i].update({"top_rate":float(top/counts), "avoid_worst_rate":1-float(worst/counts)})
     else:
-      user_data[i].update({"sum_point":0,"ave_rank":0,"max_score":0,"ave_score":0, "count_match":0})
+      user_data[i].update({"sum_point":0,"ave_rank":0,"max_score":0,"ave_score":0, "count_match":0, "top_rate":0, "avoid_worst_rate":0})
   template = loader.get_template('mahjong_records/career.html')
   context = {
     'stats':sorted(user_data, key=operator.itemgetter('sum_point'), reverse=True),
@@ -76,7 +85,6 @@ def resister_match(request):
     for i, userid_score in enumerate(sorted(user_score.items(), key=lambda x:x[1], reverse=True)):
       user_score = userid_score[1]*100
       user_point = float(user_score/1000)+uma_oka[i]-30.0
-      print(user_score, user_point)
       Record.objects.create(rank=i+1, score=user_score, point=user_point, user=users.get(id=userid_score[0]), game=game)
 
     return render(request, 'mahjong_records/resister_success.html', {'message':"対局結果を記録しました."})
@@ -94,6 +102,10 @@ def user_detail(request, user_id):
   if user.record_set.count() > 0:
     records = user.record_set.all().order_by("-game__playing_date")
     stats = user.record_set.aggregate(sum_point=models.Sum('point'),ave_rank=models.Avg('rank'),max_score=models.Max('score'),ave_score=models.Avg('score'), count_match=models.Count('rank'))
+    counts = user.record_set.count()
+    top = user.record_set.filter(rank=1).count()
+    worst = user.record_set.filter(rank=4).count()
+    stats.update({"top_rate":float(top/counts), "avoid_worst_rate":1-float(worst/counts)})
   return render(request, 'mahjong_records/user_detail.html', {'user':user, 'stats':stats, 'records':records})
 
 def game_detail(request, game_id):

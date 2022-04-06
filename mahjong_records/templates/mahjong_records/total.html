@@ -3,27 +3,37 @@
 <h1 align="center"> 本日の総合成績 </h1>
 <hr>
 {% if game.exists %}    
-    <table align="center" border="1">
-        <thead>
-            <tr>
-                <th>順位</th>
-                <th>名前</th>
-                <th>平均着順</th>
-                <th>総合ポイント</th>
+<table align="center" border="1">
+    <thead>
+        <tr>
+            <th>順位</th>
+            <th>名前</th>
+            <th>平均着順</th>
+            <th>総合ポイント</th>
+            <th>最大スコア</th>
+            <th>平均スコア</th>
+            <th>トップ率</th>
+            <th>4着回避率</th>
+            <th>総対局数</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in stats %}
+            <tr>  
+                <th>{{forloop.counter}}</th>
+                <th><strong><a  href="{% url 'mahjong_records:user_detail' user.id %}">{{user.name}}</a></strong></th>
+                <th><strong>{{user.ave_rank}}</strong></th>
+                <th>{{user.sum_point}}</th>
+                <th>{{user.max_score}}</th>
+                <th>{{user.ave_score}}</th>
+                <th>{{user.top_rate}}</th>
+                <th>{{user.avoid_worst_rate}}</th>
+                <th>{{user.count_match}}</th>
             </tr>
-        </thead>
-        <tbody>
-            {% for user in stats %}
-                <tr>  
-                    <th>{{forloop.counter}}</th>
-                    <th><strong><a  href="{% url 'mahjong_records:user_detail' user.id %}">{{user.name}}</a></strong></th>
-                    <th><strong>{{user.ave_rank}}</strong></th>
-                    <th>{{user.sum_point}}</th>
-                </tr>
-            {%endfor%}
-        </tbody>
-    </table>
-    <hr>
+        {%endfor%}
+    </tbody>
+</table>
+<hr>
 {% else %}
     <h2>対局なし</h2>
 {% endif %}

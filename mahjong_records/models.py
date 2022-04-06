@@ -31,3 +31,4 @@ class Record(models.Model):
 
   def __str__(self):
     return str(self.rank)+"着,"+self.user.name+str(self.point)+timezone.localtime(self.game.playing_date).strftime("%Y/%m/%d %H:%M")
+
