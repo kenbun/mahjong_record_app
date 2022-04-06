@@ -1,3 +1,0 @@
-web: gunicorn mahjong_records.wsgi --log-file -
-[requires]
-python_version = "3.8"
