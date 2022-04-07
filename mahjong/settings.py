@@ -15,7 +15,7 @@ import dj_database_url
 import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -124,21 +124,21 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static') #追加
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    [
-        os.path.join(BASE_DIR, "static"), 
-    ]
-)
+
+# STATICFILES_DIRS = (
+#     [
+#         os.path.join(BASE_DIR, "static"), 
+#     ]
+# )
 
 try:
-    from .local_settings import *
+    from local_settings import *
 except ImportError:
     pass
 
-# SECRET_KEY = os.environ['SECRET_KEY']
-if DEBUG == False:
+if not DEBUG:
     SECRET_KEY = os.environ['SECRET_KEY']
     import django_heroku #追加
     django_heroku.settings(locals()) #追加
@@ -146,4 +146,4 @@ if DEBUG == False:
 db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
 DATABASES['default'].update(db_from_env)
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') #追加
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
