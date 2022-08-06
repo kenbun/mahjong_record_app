@@ -20,7 +20,7 @@
                         <th><strong>{{datas.rank}}</strong></th>
                         <th><strong><a  href="{% url 'mahjong_records:user_detail' datas.user.id %}">{{datas.user.name}}</a></strong></th>
                         <th>{{datas.score}}</th>
-                        <th>{{datas.point}}</th>
+                        <th>{{datas.point|floatformat:1}}</th>
                     </tr>
                 {%endfor%}
             </tbody>

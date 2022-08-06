@@ -17,7 +17,7 @@
                 <th><strong>{{record.rank}}</strong></th>
                 <th><strong><a  href="{% url 'mahjong_records:user_detail' record.user.id %}">{{record.user.name}}</a></strong></th>
                 <th>{{record.score}}</th>
-                <th>{{record.point}}</th>
+                <th>{{record.point|floatformat:1}}</th>
             </tr>
         {%endfor%}
     </tbody>

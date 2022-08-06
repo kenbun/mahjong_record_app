@@ -43,7 +43,7 @@
                     <th><a  href="{% url 'mahjong_records:game_detail' data.game.id %}">{{data.game.playing_date|date:"20y/n/j H:i"}}</a></th>
                     <th>{{data.rank}}</th>
                     <th>{{data.score}}</th>
-                    <th>{{data.point}}</th>
+                    <th>{{data.point|floatformat:1}}</th>
                 </tr>
             {%endfor%}
         </tbody>
