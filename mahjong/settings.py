@@ -14,7 +14,7 @@ import environ
 from pathlib import Path
 import dj_database_url
 #import django_heroku
-from .local_settings import *
+#from .local_settings import *
 # from decouple import config
 from environs import Env  # new
 
@@ -143,10 +143,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # )
 
 
-try:
-    from .local_settings import *
-except ImportError:
-    pass
+#try:
+    #from .local_settings import *
+#except ImportError:
+#    pass
 
 if not DEBUG:
     SECRET_KEY = env.str('SECRET_KEY')
