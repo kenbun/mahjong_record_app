@@ -23,11 +23,11 @@ class Game(models.Model):
     return users
 
 class Record(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='user_id')
+  game = models.ForeignKey(Game, on_delete=models.CASCADE, verbose_name='game_id')
   rank = models.IntegerField(default=1)
   score = models.IntegerField(default=25000)
   point = models.FloatField(default=0)
-  user = models.ForeignKey(User, verbose_name='user_id', on_delete=models.CASCADE)
-  game = models.ForeignKey(Game, on_delete=models.CASCADE,verbose_name='game_id')
 
   def __str__(self):
     return str(self.rank)+"着,"+self.user.name+str(self.point)+timezone.localtime(self.game.playing_date).strftime("%Y/%m/%d %H:%M")
