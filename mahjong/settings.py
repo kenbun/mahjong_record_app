@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 import dj_database_url
-import django_heroku
+#import django_heroku
+from .local_settings import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -127,6 +128,8 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'static') #追加
 STATIC_URL = '/static/'
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 # STATICFILES_DIRS = (
 #     [
 #         os.path.join(BASE_DIR, "static"), 
@@ -134,16 +137,16 @@ STATIC_URL = '/static/'
 # )
 
 try:
-    from local_settings import *
+    from .local_settings import *
 except ImportError:
     pass
 
 if not DEBUG:
     SECRET_KEY = os.environ['SECRET_KEY']
-    import django_heroku #追加
-    django_heroku.settings(locals()) #追加
+    #import django_heroku #追加
+    #django_heroku.settings(locals()) #追加
 
 db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
 DATABASES['default'].update(db_from_env)
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

@@ -9,6 +9,7 @@ from django.template import loader
 from django.db import models
 from .models import User, Record, Game
 import datetime, operator, logging
+import numpy as np
 
 def index(request):
   today = datetime.date.today()
@@ -82,10 +83,13 @@ def resister_match(request):
   else:
     today = datetime.datetime.today()
     game = Game.objects.create(playing_date=today)
+    arr = np.array(list(user_score.values()))
+    u,inv,k=np.unique(-np.sort(arr)[::-1], return_inverse=True, return_counts=True)
     for i, userid_score in enumerate(sorted(user_score.items(), key=lambda x:x[1], reverse=True)):
       user_score = userid_score[1]*100
-      user_point = float(user_score/1000)+uma_oka[i]-30.0
-      Record.objects.create(rank=i+1, score=user_score, point=user_point, user=users.get(id=userid_score[0]), game=game)
+      rank=k[:inv[i]].sum()+1
+      user_point = float(user_score/1000)+uma_oka[rank-1]/k[inv[i]]-30.0
+      Record.objects.create(rank=rank, score=user_score, point=user_point, user=users.get(id=userid_score[0]), game=game)
 
     return render(request, 'mahjong_records/resister_success.html', {'message':"対局結果を記録しました."})
 
