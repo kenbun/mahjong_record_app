@@ -7,3 +7,4 @@ lib/
 mahjong/bin/
 mahjong/lib/
 mahjong/lib64/
+pa_autoconfigure_django.py

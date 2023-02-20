@@ -10,11 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+import environ
 from pathlib import Path
 import dj_database_url
 #import django_heroku
 from .local_settings import *
+# from decouple import config
+from environs import Env  # new
 
+env = Env()  # new
+env.read_env()  # new
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,10 +30,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-ALLOWED_HOSTS = ['*']
-
+#DEBUG = env.bool("DEBUG", default=False)
+DEBUG=False
+ALLOWED_HOSTS = ['localhost','.pythonanywhere.com', 'takefumi.pythonanywhere.com']
+CSRF_COOKIE_SECURE=True
+SESSION_COOKIE_SECURE=True
 
 # Application definition
 
@@ -136,13 +142,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     ]
 # )
 
+
 try:
     from .local_settings import *
 except ImportError:
     pass
 
 if not DEBUG:
-    SECRET_KEY = os.environ['SECRET_KEY']
+    SECRET_KEY = env.str('SECRET_KEY')
     #import django_heroku #追加
     #django_heroku.settings(locals()) #追加
 
