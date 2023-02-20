@@ -83,17 +83,28 @@ WSGI_APPLICATION = 'mahjong.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'mahjong',
+#         'USER': 'user',
+#         'PASSWORD': '',
+#         'HOST': 'host',
+#         'PORT': '',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mahjong',
-        'USER': 'user',
-        'PASSWORD': '',
-        'HOST': 'host',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'takefu$default',
+        'USER': 'takefumi',
+        'PASSWORD': 'takefumi_mysql',
+        'HOST': 'takefumi.mysql.pythonanywhere-services.com',
+         'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
-
 
 
 # Password validation
@@ -148,8 +159,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #except ImportError:
 #    pass
 
-if not DEBUG:
-    SECRET_KEY = env.str('SECRET_KEY')
+from django.core.management.utils import get_random_secret_key
+SECRET_KEY = get_random_secret_key()  
+#if not DEBUG:
+    #SECRET_KEY = env.str('SECRET_KEY')
     #import django_heroku #追加
     #django_heroku.settings(locals()) #追加
 
