@@ -97,7 +97,7 @@ WSGI_APPLICATION = 'mahjong.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'takefu$default',
+        'NAME': 'takefumi$default',
         'USER': 'takefumi',
         'PASSWORD': 'takefumi_mysql',
         'HOST': 'takefumi.mysql.pythonanywhere-services.com',
